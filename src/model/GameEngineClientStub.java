@@ -1,8 +1,14 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Deque;
 
@@ -11,15 +17,19 @@ import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
 import model.interfaces.PlayingCard;
 
-public class GameEngineClientStub implements GameEngine {
+public class GameEngineClientStub implements GameEngine, Serializable {
 
 	private Socket socket;
 	private ObjectOutputStream outputStream;
 	private ObjectInputStream inputStream;
-	private GameEngineServerStub gess;
-	
-	public GameEngineClientStub(GameEngineServerStub gess) {
-		this.setGess(gess);
+
+	public GameEngineClientStub() {
+		try {
+			connection();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -87,13 +97,26 @@ public class GameEngineClientStub implements GameEngine {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public void connection() throws Exception{
+		System.out.println("Connecting ..");
+		//		final String hostname = "time-c.nist.gov";
+		//		final int port = 13;
+		final String hostname = "localhost";
+		final int port = 10013;
 
-	public GameEngineServerStub getGess() {
-		return gess;
-	}
+		// https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
+		try (Socket s = new Socket(hostname, port);
+				BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));)
+		{
+			System.out.println(hostname + " says: ");
 
-	public void setGess(GameEngineServerStub gess) {
-		this.gess = gess;
+			String msg;
+			while ((msg = br.readLine()) != null)
+				System.out.println(msg);
+
+		}
+
+		System.out.println("Closing ..");
 	}
 
 }
