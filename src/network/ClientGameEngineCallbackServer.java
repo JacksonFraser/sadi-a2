@@ -11,7 +11,8 @@ public class ClientGameEngineCallbackServer {
 	private ServerSocket ss;
 
 	public ClientGameEngineCallbackServer(ServerSocket ss) {
-		new CGECSThread().start();
+		this.ss = ss;
+		new CGECSThread(ss).start();
 		
 	}
 

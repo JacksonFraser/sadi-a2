@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.JOptionPane;
 
@@ -12,7 +13,11 @@ import model.interfaces.GameEngine;
 import view.AppFrame;
 import view.CreatePlayerFrame;
 
-public class AddPlayerController implements ActionListener {
+public class AddPlayerController implements ActionListener, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private CreatePlayerFrame cpf;
 	private SimplePlayer player;
 	private AppFrame appFrame;

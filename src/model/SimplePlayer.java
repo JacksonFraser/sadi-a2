@@ -1,8 +1,14 @@
 package model;
 
+import java.io.Serializable;
+
 import model.interfaces.Player;
 
-public class SimplePlayer implements Player {
+public class SimplePlayer implements Player , Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String name;
 	private int points, bet, result;

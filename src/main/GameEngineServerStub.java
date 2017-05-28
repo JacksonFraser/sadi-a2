@@ -30,6 +30,7 @@ public class GameEngineServerStub {
 				System.out.println("Client #"+numClients+" has joined");
 				System.out.println();
 				numClients++;
+				System.out.println("THIS IS GAME "+gameEngine);
 				new GESSThread(socket,gameEngine).run();
 			}
 		}

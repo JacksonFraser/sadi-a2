@@ -51,7 +51,6 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 					cgecs = new ClientGameEngineCallbackServer(ss);
 				}
 			}.start();
-			System.out.println("FINISHED CREATING CGECS");
 		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -152,7 +151,6 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 
 	@Override
 	public Deque<PlayingCard> getShuffledDeck() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

@@ -24,6 +24,7 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public void dealPlayer(Player player, int delay) {
+		System.out.println("THE SIZE IS "+ deck.size());
 		int handTotal = 0;
 		PlayingCard card;
 		while (handTotal <= BUST_LEVEL) {
