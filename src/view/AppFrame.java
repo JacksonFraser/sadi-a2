@@ -5,10 +5,13 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import network.GameEngineClientStub;
 import model.EditorModel;
+import model.GameEngineCallbackImpl;
 import model.GameEngineImpl;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
+import model.interfaces.GameEngineCallback;
 
 public class AppFrame extends JFrame {
 	/**
@@ -20,11 +23,15 @@ public class AppFrame extends JFrame {
 	private EditorPanel editorPanel = new EditorPanel();
 	private StatusBar statusBar = new StatusBar();
 	private GameEngine gameEngine;
+	private GameEngineCallbackImpl gec;
 	private SimplePlayer player;
 	private int bet;
 
 	public AppFrame(GameEngine gameEngine) {
 		super("SADI Assignment 1");
+		
+		
+		
 		setLayout(new BorderLayout());
 		setJMenuBar(menuBar);
 		this.add(toolbar, BorderLayout.NORTH);
@@ -34,6 +41,11 @@ public class AppFrame extends JFrame {
 		setVisible(true);
 		setBounds(100, 100, 640, 480);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		GameEngineCallback gec = new GameEngineCallbackImpl(this);
+		gameEngine.addGameEngineCallback(gec);
+	
 	}
 
 	public void setGameEnginePlayer(SimplePlayer player) {
@@ -41,7 +53,7 @@ public class AppFrame extends JFrame {
 	}
 
 	public void getPlayerName() {
-		if(this.player != null)
+		if (this.player != null)
 			System.out.println(player.getPlayerName());
 	}
 
@@ -53,10 +65,11 @@ public class AppFrame extends JFrame {
 		this.player = player;
 	}
 
-	public GameEngine getGameEngine(){
+	public GameEngine getGameEngine() {
 		return gameEngine;
 	}
-	public void displayErrorMessage(String message){
+
+	public void displayErrorMessage(String message) {
 		JOptionPane.showMessageDialog(this, message);
 	}
 
@@ -67,6 +80,7 @@ public class AppFrame extends JFrame {
 	public void setBet(int bet) {
 		this.bet = bet;
 	}
+
 	public EditorPanel getEditorPanel() {
 		return editorPanel;
 	}

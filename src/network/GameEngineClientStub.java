@@ -1,4 +1,4 @@
-package model;
+package network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +12,12 @@ import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Deque;
 
+import commands.AddGameEngineCallbackCommand;
+import commands.AddPlayerCommand;
+import commands.CalculateResultCommand;
+import commands.Command;
+import commands.DealHouseCommand;
+import commands.DealPlayerCommand;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
@@ -19,6 +25,10 @@ import model.interfaces.PlayingCard;
 
 public class GameEngineClientStub implements GameEngine, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Socket socket;
 	private ObjectOutputStream outputStream;
 	private ObjectInputStream inputStream;
@@ -26,6 +36,8 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 	public GameEngineClientStub() {
 		try {
 			connection();
+			outputStream = new ObjectOutputStream(socket.getOutputStream());
+			inputStream = new ObjectInputStream(socket.getInputStream());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -34,20 +46,35 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 
 	@Override
 	public void dealPlayer(Player player, int delay) {
-		// TODO Auto-generated method stub
-
+		
+		Command dealPlayerCommand = new DealPlayerCommand(player, delay);
+		try {
+			this.outputStream.writeObject(dealPlayerCommand);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
 	}
 
 	@Override
 	public void dealHouse(int delay) {
-		// TODO Auto-generated method stub
+		Command dealHouseCommand = new DealHouseCommand(delay);
+		try {
+			this.outputStream.writeObject(dealHouseCommand);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void addPlayer(Player player) {
-		// TODO Auto-generated method stub
-
+		Command addPlayer = new AddPlayerCommand(player);
+		try {
+			this.outputStream.writeObject(addPlayer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -64,13 +91,24 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 
 	@Override
 	public void calculateResult() {
-		// TODO Auto-generated method stub
+		Command calculateResult = new CalculateResultCommand();
+		try {
+			this.outputStream.writeObject(calculateResult);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
-		// TODO Auto-generated method stub
+		Command addGameEngineCallback = new AddGameEngineCallbackCommand();
+		try{
+			this.outputStream.writeObject(addGameEngineCallback);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 
 	}
 
@@ -99,15 +137,13 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 	}
 	public void connection() throws Exception{
 		System.out.println("Connecting ..");
-		//		final String hostname = "time-c.nist.gov";
-		//		final int port = 13;
 		final String hostname = "localhost";
-		final int port = 10013;
+		final int port = 10101;
 
-		// https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
 		try (Socket s = new Socket(hostname, port);
 				BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));)
 		{
+			this.socket = s;
 			System.out.println(hostname + " says: ");
 
 			String msg;

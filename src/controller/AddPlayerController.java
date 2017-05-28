@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import main.GUIClient;
 import model.GameEngineImpl;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import view.AppFrame;
 import view.CreatePlayerFrame;
-import view.GUIClient;
 
 public class AddPlayerController implements ActionListener {
 	private CreatePlayerFrame cpf;

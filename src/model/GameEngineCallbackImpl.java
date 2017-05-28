@@ -1,5 +1,6 @@
 package model;
 
+import network.ClientGameEngineCallbackServer;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
@@ -11,6 +12,7 @@ public class GameEngineCallbackImpl implements GameEngineCallback {
 
 	public GameEngineCallbackImpl(AppFrame appFrame) {
 		this.appFrame = appFrame;
+		
 	}
 
 	@Override
