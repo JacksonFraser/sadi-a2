@@ -1,17 +1,10 @@
 package main;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Date;
 
-import network.ClientThread;
-import model.GameEngineCallbackImpl;
+import network.GESSThread;
 import model.GameEngineImpl;
 import model.interfaces.GameEngine;
 
@@ -27,16 +20,17 @@ public class GameEngineServerStub {
 		handleClients();
 	}
 	private void handleClients() throws IOException{
-		System.out.println("waiting...");
 		try (ServerSocket serverSocket = new ServerSocket(10101))
 		{
+			
 			while (true)
 			{
-				System.out.println("Waiting for connection ..");
+				System.out.println("GESS waiting for connection ..");
 				Socket socket = serverSocket.accept();
 				System.out.println("Client #"+numClients+" has joined");
+				System.out.println();
 				numClients++;
-				new ClientThread(socket,gameEngine).start();
+				new GESSThread(socket,gameEngine).run();
 			}
 		}
 		catch(Exception e){

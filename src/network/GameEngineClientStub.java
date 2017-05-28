@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Collection;
@@ -32,16 +33,35 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 	private Socket socket;
 	private ObjectOutputStream outputStream;
 	private ObjectInputStream inputStream;
-
+	private ClientGameEngineCallbackServer cgecs;
+	private int port;
 	public GameEngineClientStub() {
 		try {
-			connection();
+			Socket socket = new Socket("localhost", 10101);
 			outputStream = new ObjectOutputStream(socket.getOutputStream());
 			inputStream = new ObjectInputStream(socket.getInputStream());
+			
+			
+			ServerSocket ss = new ServerSocket(0);
+			int port = ss.getLocalPort();
+			outputStream.writeObject(port);
+		
+			new Thread() {
+				public void run() {
+					cgecs = new ClientGameEngineCallbackServer(ss);
+				}
+			}.start();
+			System.out.println("FINISHED CREATING CGECS");
+		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	public int getPort() {
+		return port;
 	}
 
 	@Override
@@ -102,7 +122,7 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 
 	@Override
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
-		Command addGameEngineCallback = new AddGameEngineCallbackCommand();
+		Command addGameEngineCallback = new AddGameEngineCallbackCommand(port);
 		try{
 			this.outputStream.writeObject(addGameEngineCallback);
 		}
@@ -135,24 +155,5 @@ public class GameEngineClientStub implements GameEngine, Serializable {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public void connection() throws Exception{
-		System.out.println("Connecting ..");
-		final String hostname = "localhost";
-		final int port = 10101;
-
-		try (Socket s = new Socket(hostname, port);
-				BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));)
-		{
-			this.socket = s;
-			System.out.println(hostname + " says: ");
-
-			String msg;
-			while ((msg = br.readLine()) != null)
-				System.out.println(msg);
-
-		}
-
-		System.out.println("Closing ..");
-	}
-
+	
 }

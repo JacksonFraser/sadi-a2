@@ -1,14 +1,14 @@
 package commands;
 
 import network.ClientGameEngineCallbackServer;
+import network.ServerStubGameEngineCallback;
 import model.interfaces.GameEngine;
 
 public class AddGameEngineCallbackCommand implements Command {
 	
 	private int port;
 	private String hostname;
-	public AddGameEngineCallbackCommand() {
-		this.hostname = hostname;
+	public AddGameEngineCallbackCommand(int port) {
 		this.port = port;
 	}
 	
@@ -16,8 +16,7 @@ public class AddGameEngineCallbackCommand implements Command {
 	
 	@Override
 	public void execute(GameEngine ge) {
-		ClientGameEngineCallbackServer cgecs = new ClientGameEngineCallbackServer();
-		port = cgecs.getPort();
+		ge.addGameEngineCallback(new ServerStubGameEngineCallback(port));
 		
 		
 	

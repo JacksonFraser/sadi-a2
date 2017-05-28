@@ -7,6 +7,10 @@ import model.interfaces.PlayingCard;
 
 public class ServerStubGameEngineCallback implements GameEngineCallback {
 
+	public ServerStubGameEngineCallback(int port) {
+		
+	}
+
 	@Override
 	public void nextCard(Player player, PlayingCard card, GameEngine engine) {
 		// TODO Auto-generated method stub

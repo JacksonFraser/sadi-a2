@@ -9,10 +9,8 @@ import model.interfaces.GameEngine;
 
 public class GUIClient {
 	public static void main(String[] args) {
-		System.out.println("here");
-		GameEngineClientStub gecs1 = new GameEngineClientStub();
 	//	GameEngineClientStub gecs2 = new GameEngineClientStub();
-		new AppFrame(gecs1);
+		new AppFrame();
 		//new AppFrame(gecs2);
 		//final GameEngine gameEngine2 = new GameEngineClientStub();
 	/*	AppFrame appFrame1 = new AppFrame(gameEngine1);
