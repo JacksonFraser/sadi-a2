@@ -35,8 +35,8 @@ public class GameEngineServerStub {
 				System.out.println("Waiting for connection ..");
 				Socket socket = serverSocket.accept();
 				System.out.println("Client #"+numClients+" has joined");
-
-				new ClientThread(socket).start();
+				numClients++;
+				new ClientThread(socket,gameEngine).start();
 			}
 		}
 		catch(Exception e){
